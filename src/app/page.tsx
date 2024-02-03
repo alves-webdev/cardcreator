@@ -7,6 +7,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { IMaskInput } from "react-imask";
+import { user } from "@/data/userStore";
+
 
 const formSchema = z.object({
   name: z.string().min(2),
@@ -17,11 +19,11 @@ const formSchema = z.object({
 const mask = [{ mask: "(00) 0000-0000" }, { mask: "(00) 00000-0000" }];
 
 export default function Home() {
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [isValid, setIsValid] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [name, setName] = useState<string>("");
+  const [phone, setPhone] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [isValid, setIsValid] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -55,6 +57,12 @@ export default function Home() {
     console.log(name, phone, email);
     const result = formSchema.safeParse({ name, phone, email });
     setIsValid(result.success);
+    if(result.success) {
+      user.name = name;
+      user.phone = phone;
+      user.email = email;
+      console.log(user);
+    }
     console.log(result);
   }, [name, phone, email]);
 
@@ -142,11 +150,7 @@ export default function Home() {
             <Link
               href={
                 isValid
-                  ? `/card?name=${encodeURIComponent(
-                      name
-                    )}&phone=${encodeURIComponent(
-                      phone
-                    )}&email=${encodeURIComponent(email)}`
+                  ? `/card`
                   : "#"
               }
               className={`${
