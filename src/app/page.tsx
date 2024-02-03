@@ -33,7 +33,6 @@ export default function Home() {
         break;
       case "phone":
         setPhone(value);
-        console.log(value);
         break;
       case "email":
         setEmail(value);
@@ -54,16 +53,13 @@ export default function Home() {
   }, [name, phone, email]);
 
   useEffect(() => {
-    console.log(name, phone, email);
     const result = formSchema.safeParse({ name, phone, email });
     setIsValid(result.success);
     if(result.success) {
       user.name = name;
       user.phone = phone;
       user.email = email;
-      console.log(user);
     }
-    console.log(result);
   }, [name, phone, email]);
 
   return (
@@ -90,7 +86,7 @@ export default function Home() {
         <div className="md:w-1/2 w-full p-6 md:p-0">
           <form className="space-y-4 flex flex-col text-white">
             <div>
-              <label>Name*</label>
+              <label>Nome*</label>
               <input
                 name="name"
                 type="name"
@@ -109,7 +105,6 @@ export default function Home() {
                   className="block w-full text-black border border-gray-300  p-2"
                   onAccept={(value) => {
                     setPhone(value);
-                    console.log(value);
                   }}
                   placeholder="(99) 99999-9999"
                 />
